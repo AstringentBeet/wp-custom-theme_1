@@ -67,6 +67,40 @@ Right now I'm working on recreating various template parts by further breaking t
 Right now, it's a bit fugly, at least in the way that it's set up.
 #### Block vs Class Settings
 When dealing with custom wordperss themes, using css classes is generally seen as faster and grants the decveloper full control of the elements. The only caveat is that it's harder to customize for clients.
-Blocks on the otherhand are slower, but allow the clientto customize the theme much easier. The caveat to this is that no other properties are available due to the simplicity of Gutenberg's block designs.
+
+Blocks on the otherhand are slower, but allow the clients to customize the theme much easier. The caveat to this is that no other properties are available due to the simplicity of Gutenberg's block designs.
 
 Obviously, there are advantages and disadvanteges on using both, so it's realy up to the developer to decide which route to use.
+
+### 05/06/2024
+I spent the majority of the day trying to figure just how the css worked since their wasn't much explanation for the already-established css classes, such as the odd `!mx-auto` and the like. After doing some digging, it turns out that the theme is reliant primarily on tailwind css, but a precompiled, minified version of it. A lot of educaitonal content includes precompiled versions to simplify the process and reduce the need to go through the extra steps of setting up multiple configuration files.
+
+Still not a big fan of the lack of explanation, but we can't have everything spoon fed to us, after all...
+
+Besides that, I did add the css theme into the gutenberg editor by utilizing the WordPress hook, `after_setup_theme()`, which "is used to perform basic setup, registration, and init actions for a theme." ([from wp docs](https://developer.wordpress.org/reference/hooks/after_setup_theme/)). 
+So I updated the `functions.php` file with the following:
+```
+include( get_theme_file_path('/includes/setup.php') );
+add_action('after_setup_theme', 'u_setup_theme');
+```
+and created `setup.php` to include the following as well:
+```
+function u_setup_theme() {
+    add_theme_support('editor-styles');
+    add_editor_style([
+        'https://fonts.googleapis.com/css2?family=Pacifico&family=Rubik:w
+        'assets/bootstrap-icons/bootstrap-icons.css',
+        'assets/public/index.css'
+    ]);
+}
+```
+The lines of code above allow me to see the two fonts – 'Pacifico' and 'Rubik', bootstrap icons, and the full `index.css` file (the precompiled tailwind file I referred to earlier).
+
+Further along the lesson, I began to notice that the editor styles didn't match the front-end styles. For example:
+#### Gutenberg Editor UI
+![](assets/images/editor_duality.png)
+
+#### Front-end Display
+![](assets/images/editor_frontend.png)
+
+The reason being is due to the markup that wordpress generates for the front-end is different from the editor. The best way to fix that would be to manually input css specific styling for the section you want to match for the front-end, which can be a pain in the ass if one wants the all of the content made with the editor to match the front-end. So with that, I'll leave it be; tabs exist for a reason.
