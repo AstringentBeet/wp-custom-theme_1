@@ -127,15 +127,15 @@ So, the whole process involves hardcoding the html for the block parts, copying 
 
 I'm assuming the step involved were done for purely educational purposes. Hopefully we can go over custom block development in order to avoid going through such lengths.
 
-#### The Query Loop Block
+#### <span style ="color:#80b3ff"> The Query Loop Block </span>
 This project's first piece of dynamic content. The Query Loop Block grabs posts from the wp database and rendering them on a page with pagination. This block is the modern,updated version of what was once known as "The Loop".
 
 When looking at the block, it's easy to assume that the query loop is doing all the work. In reality, the query loop grabs the data/content, but doesn't present it. It's child block, "Post Content" presents the data.
 
-#### What is a Query?
+#### <span style ="color:#80b3ff"> What is a Query? </span>
 A Query is a request for data from a database. Behind the scenes, WordPress will always perform a query on every page, posting data relating to the current url that it is on automatically.
 
-#### Small issue on this part of the lesson.
+#### <span style ="color:#80b3ff">Small issue on this part of the lesson.</span>
 As I went furhter along the lesson revolving around the query loop, the instructor used a block that shows the amount of comments a post has titled "Comments Count", which is a experimental feature that's only accessible through the Gutenberg plugin. That we have to download. For a course going over how to build custom themes and plugins from scratch.
 
 A part of me wants to completely bypass this and find alternative to using this plugin (since I'm trying to use as few plugins as possible), but I can't let my ego/temperment get the better of me...ugh...
@@ -143,3 +143,132 @@ A part of me wants to completely bypass this and find alternative to using this 
 I went ahead and downloaded the plugin, and the visual editor looks a lot better! The block UI is a lot less clunky and, of course, the unseen blocks I was lamenting about finally appeared. Granted, said blocks are yet to be seen in the official release, and after doing some digging, "Comments Count" has been around since at least 2021.
 
 All in all, I didn't get too much done today due to the massive amount of backtracking and off-tangent research regarding these 'mysterious' blocks.
+
+### 05/08/2024
+
+I ended up creating a sidebar template for the main blog, which was mostly done with the visual editor. Sure, I copied some code from the index.html template, but it was small in comparison.
+
+```
+      <div class="mb-8">
+        <h6 class="text-xl font-medium mb-5">Trending Posts</h6>
+        <div class="flex mb-4 items-center">
+          <!-- Post Image -->
+          <a class="shrink-0" href="#">
+            <img class="rounded-lg w-16" src="/public/trending-01.jpg">
+          </a>
+          <div class="text-sm ml-4">
+            <!-- Post Title -->
+            <a class="block font-medium" href="blog-single.html">
+              Retro Cameras are Trending. Why so Popular?
+            </a>
+            <!-- Post Author -->
+            <span class="text-gray-500">
+              by <a href="#">Andy Williams</a>
+            </span>
+          </div>
+        </div>
+        <div class="flex mb-4 items-center">
+          <a class="shrink-0" href="#">
+            <img class="rounded-lg w-16" src="/public/trending-02.jpg">
+          </a>
+          <div class="text-sm ml-4">
+            <a class="block font-medium" href="blog-single.html">
+              Retro Cameras are Trending. Why so Popular?
+            </a>
+            <span class="text-gray-500">
+              by <a href="#">Andy Williams</a>
+            </span>
+          </div>
+        </div>
+        <div class="flex mb-4 items-center">
+          <a class="shrink-0" href="#">
+            <img class="rounded-lg w-16" src="/public/trending-03.jpg">
+          </a>
+          <div class="text-sm ml-4">
+            <a class="block font-medium" href="blog-single.html">
+              Retro Cameras are Trending. Why so Popular?
+            </a>
+            <span class="text-gray-500">
+              by <a href="#">Andy Williams</a>
+            </span>
+          </div>
+        </div>
+      </div>
+```
+
+Now that the index page is completed – that is creating a perfect copy of the hard-written html code using a combination of custom html (with block-grammar), the task for today was doing the same for the footer template part. I did exactly the same thing for the footer as I did for the header and body part, but I failed to reset the customization settings done onto the page, so I didn't notice any change the original footer as a result. I ended up spendign a few hours of my evening bashing my head against the wall trying to figure out what went wrong. So yeah; always remember to reset customizations on the visual editor once the template part file has been updated or altered in any way.
+
+Now onto the templates...
+I blitzed through creating `404.html`, `category.html`, `search.html`, `single.html`, and `page.html` 
+
+#### <span style="color:#80b3ff"> Quick Note on `single.html` </span>
+Like the other templates, `single.html` is built using `index.html` as its base. What makes `single.html` stand out is that we're taking the post template columns directly outside of the query loop (using the site editor). Because of the [template hiearchy ](https://developer.wordpress.org/themes/basics/template-hierarchy/), Wordpress processes the page (or post) request by looking at the slug. As long as the post material is on the page, wordpress will return the post relating to the page's slug (which should only be one).
+Children loop blocks can render the post data, so having the parent loop through the every post in the database is unnecessary.
+
+### 05/09/2024
+
+I finished the template section with a `full-width-page.html`, which I created using the page template as the blueprint and registering it on `theme.json`.
+
+#### <span style="color:#80b3ff">Onto to the big leagues: React and Block Development.</span>
+
+As it turns out, React is more than a library, it provides a set of tools that help with product optimization once said product is good to go.
+
+`import React from 'react'` is very similar to how the `include()` function works in php. Javascript works by breaking up code into differeent pieces that serve a purpose called **modules**.
+
+So much to learn, so little time, it seems. The course is using outdated React code, but I'll still follow along so I won't get too lost in the sauce. This time around, I've learned about the function of "memory leaks", which is a pretty massive problem in programming. If a variable isn't needed, it's best to clear it, which is why returning elements from a function instead of a variable is seen as important. Take the following, for example:
+```
+const loginForm = React.createElement('form');
+
+if(someCondition) {
+  ReactDom.render(loginForm, document.querySelector('#root'));
+}
+```
+The code above has a value stored in a variable, which is common practice...if you're a fuckin' noob.
+But in all seriousness, keeping a value stored in a variable can eventually become expensive and inefficient since the variable takes up space. Compare that to this:
+```
+function loginForm() {
+  return React.createElement('form')'
+}
+
+if(someCondition) {
+  ReactDom.render(loginForm(), document.querySelector('#root'));
+}
+```
+This will only return a variable if it the function is called, ultimately avoiding a leak.
+
+Here's a better example:
+Starting with the variable version.
+```
+import React from 'react'
+import ReactDom from 'react-dom/client';
+
+const div = React.createElement( 'div', null, [
+  React.createElement('h1', null, 'Hi'),
+  React.createElement('p', null, 'Hello'),
+  React.createElement('p', null, 'hey')
+]);
+const rootElement = document.querySelector('#root');
+const root = ReactDom.createRoot(rootElement);
+
+root.render(div)
+```
+Here is the function version:
+```
+import React from 'react'
+import ReactDom from 'react-dom/client';
+
+function Page() {
+  return React.createElement( 'div', null, [
+    React.createElement('h1', null, 'Hi'),
+    React.createElement('p', null, 'Hello'),
+    React.createElement('p', null, 'hey')
+  ]);
+}
+
+const rootElement = document.querySelector('#root');
+const root = ReactDom.createRoot(rootElement);
+
+root.render(Page())
+```
+
+Side note: webpack will convert JSX into the `React.createElement()` function. JSX is not HTML.

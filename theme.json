@@ -166,5 +166,31 @@
             },
             "blockGap": "4rem"
         }
-    }
+    },
+    "templateParts": [
+        {
+            "area": "footer",
+            "name": "footer",
+            "title": "Footer"
+        },
+        {
+            "area": "header",
+            "name": "header",
+            "title": "Header"
+        },
+        {
+            "area": "sidebar",
+            "name": "sidebar",
+            "title": "Sidebar"
+        }
+    ],
+    "customTemplates": [
+        {
+            "name": "full-width-page",
+            "title" : "Full Width Page",
+            "postTypes": [
+                "page"
+            ]
+        }
+    ]
 }
