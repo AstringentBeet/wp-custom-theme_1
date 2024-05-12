@@ -272,3 +272,120 @@ root.render(Page())
 ```
 
 Side note: webpack will convert JSX into the `React.createElement()` function. JSX is not HTML.
+
+##### jsx version
+
+```
+import React from 'react'
+import ReactDom from 'react-dom/client
+
+function Page () {
+  return(
+    <div>
+      <h1> Hello </h1>
+      <p> Hey </p>
+      <p> Hi </p>
+    </div>
+  );
+}
+  const rootElement = document.querySelector('#root');
+  const root = ReactDom.createRoot(rootElement);
+
+  root.render(Page())
+
+```
+
+### 05/11/2024
+
+For more information on importing and exporting components, [medium](https://betterprogramming.pub/understanding-the-difference-between-named-and-default-exports-in-react-2d253ca9fc22) provides a great article on the subject.
+
+#### <span style = "color: #80b3ff">Other React Notes </span>
+It's worth mentioning that this portion of the course is a very, very brief introduction to React. I'll work on a different project that'll utilize React at a much deeper level, but for now:
+
+- Before being loaded onto the internet, webPack processes the code as a package, which bundles and optimizes our code.
+
+- React needs a root/parent element to wrap elements in. Divs are the default value, but it is becoming increasingly commonplace to use fragment `<>` `</>` tags for wrapping. Although empty, the DOM converts them into `<div>` tags with class name `root`.
+Other 
+
+- exports without a default tag are named exports. They usually use the name of the function or class name as the identifier. When you export them, simply apply the `export` tag beforehand, so it'll look like `export function myComponent() {//code}`. So when importing into another component, it would look like:
+`import {myComponent} from '/path/to/myComponent'`.
+  - A cool thing with named exports is that you can use what's called **opt-in alias**. This is when a component is given a different name in order to prevent collisions in a file.
+  ```
+  import {myCompOne as myComponent} from 'path/to/file'
+  ```
+  - Multiple components within the same file can be exported:
+  ```
+  export const myCompOne = () => {};
+
+  export const myCompTwo = () => {};
+
+  export const myCompThree = () => {};
+  ```
+    -to import multiple components onto a different file, just seperate them by commas within the curly brackets.
+  `import { myCompOne, myCompTwo, myCompThree } from './path/to/file'`
+
+- exports with a default tag are default exports.
+  - When exporting, there's no need to wrap the components in curly brackets
+
+- jsx uses the keyword `className` in place of `class`. This can be used for altering the style of a document by connecting to css
+  - `<h1 className = 'orange'> hi </h1>`
+
+- you have to import the css file into the reactjs file. For example 
+  - `import ./style.css`
+
+-HTML was never made to be scalable, which is why dynamic progamming is important It's less taxing on memory and efficiency. HTML cannot split itself into various files like css and javascript can, so this is where components come into play. This is where components come into play.
+  -The proper definition of a component is a reusable block of code that encapsulates the logic, structure, and presentation of a ui element. It essentially creates brand new tags for html to use for a webpage when a function is called on.
+
+- props are react's equivalent to html attributes, just like `className` is React's equivalent to a css `class`.
+```
+function Header(props) {
+  const clock = Date().toLocaleString();
+  return (
+    <h1 className="orange">
+     Hello {props.name}! {clock}
+    </h1>
+  );
+}
+```
+
+in some cases, there may be situations where one would want to pass on dynamic data
+```
+function Header(props) {
+  const clock = Date.toLocaleString();
+  return (
+    <h1 className = "orange"> 
+      Hello {props.name}. The Current time is {clock}
+    <h1/>
+  )
+}
+
+function Page() {
+  const name = "John";
+  return (
+    <>
+      <Header name={name} />
+      <p>This is a paragraph</p>
+      <p>This is another paragraph</p>
+    </>
+  );
+}
+```
+
+- Components are regular JavaScript functions, so you can keep multiple components in the same file. This is convenient when components are relatively small or tightly related to each other.
+
+- Never define a component inside another component!
+
+- As stated in the [official React Docs](https://react.dev/learn/your-first-component), all components must start with a capital letter otherwise it won't work.
+
+- A namespace is a feature for organizing data into seperate locations.
+
+- `React.useState()` is a react hook that registers a piece of data with a component. Syntactically, it is an array that uses two inputs
+
+- A state is data that is registered within a component that is (usually) prone to change.
+
+Hell, I have so much more to learn...
+
+### 05/12/2024
+
+#### <span style="color:#80b3ff">The Meat of The Course: Block Development Fundamentals</span>
+
