@@ -383,9 +383,15 @@ function Page() {
 
 - A state is data that is registered within a component that is (usually) prone to change.
 
-Hell, I have so much more to learn...
+Hell, I have so much more to learn...`
 
 ### 05/12/2024
 
 #### <span style="color:#80b3ff">The Meat of The Course: Block Development Fundamentals</span>
 
+- Wordpress exposes its api to both plugins and themes, but for the sake of SOC, it's best to keep plugins (or in this case, blocks) and themes loosely coupled. This can save a lot of headache later down the road.
+
+- Registering a plugin is similar to registering a theme.
+
+#### 05/25/2024
+I spent the past two weeks working primarily on this theme's required plugins. So far, I have built the fancy header, which is a stupid-simple block that just animates a highlight under a title, and am currently working on a search-form block. That one is a little more intensive as I'm finally implementing some actual php, and learning about various wordpress apis. Anyways, I came in to update this log since I had to copy the block grammaar from the updated search-form template (which is utlizing the aforementioned 'search-form' block).
